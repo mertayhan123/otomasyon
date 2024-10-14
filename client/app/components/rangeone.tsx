@@ -21,7 +21,7 @@ const RangeOne = (
       max="100"
       value={rangeValue}
       onChange={handleRangeChange}
-      className="range w-2/5"
+      className="range "
     />
   )
 }

@@ -12,7 +12,6 @@ const Component: React.FC<ComponentProps> = ({
   setvalue,
   checked,
 }) => {
-  console.log("Şu anki değer: " + rangevalue);
 
   // pointers state'ini tanımlıyoruz
   const [pointers, setPointers] = useState<ISettingsPointer[]>([
@@ -29,7 +28,6 @@ const Component: React.FC<ComponentProps> = ({
     // pointers'ı sadece newPointers ile güncelle
     setPointers(newPointers);
 
-    console.log("Yeni değer: " + newValue);
     setvalue(newValue); // Burada setvalue çağrısını yapıyoruz
   };
 
@@ -39,8 +37,6 @@ const Component: React.FC<ComponentProps> = ({
     setPointers((prevPointers) => [{ value: rangevalue }]);
   }, [rangevalue]);
 
-  console.log("Şu anki değer1: " + rangevalue);
-  console.log("Şu anki değer poin: " + pointers[0].value);
   return (
     <RoundSlider
       disabled={!checked}
@@ -85,7 +81,6 @@ const Component: React.FC<ComponentProps> = ({
       pathEndAngle={30}
       pathBgColor={"#d0d0d"}
       pathThickness={5}
-      pathInnerBgColor={"url(#color-slider-gradient)"}
       pathInnerBgFull={false}
       connectionBgColor={"#939191"}
       pointerBgColor={"#cbcbcb"}
@@ -98,8 +93,8 @@ const Component: React.FC<ComponentProps> = ({
       tickValuesPrefix={" "}
       tickValuesSuffix={"°"}
       tickValuesDistance={20}
-      tickValuesColor={"#e1e1e1"}
-      textColor={"#fff"}
+      tickValuesColor={"#000"}
+      textColor={"#000"}
       textFontSize={24}
       textSuffix={"°"}
       textPrefix={" "}

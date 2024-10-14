@@ -35,7 +35,6 @@ export default function RootLayout({
         <ThemeProvider>
           <Header></Header>
           {children}
-          <Footer></Footer>
         </ThemeProvider>
       </body>
     </html>
