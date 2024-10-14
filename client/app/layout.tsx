@@ -28,11 +28,13 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" data-theme>
-      <body data-theme
+      <body
+        data-theme
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
         <ThemeProvider>
-          <Header></Header> {children}
+          <Header></Header>
+          {children}
           <Footer></Footer>
         </ThemeProvider>
       </body>
