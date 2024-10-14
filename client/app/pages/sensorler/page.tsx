@@ -1,10 +1,10 @@
 import React from "react";
+import SensorCard from "../../components/sensor-card";
 
 export default function Sensorler() {
   return (
     <div>
-      Sensorler
-      <div>AHmet</div>
+      <SensorCard />
     </div>
   );
 }
