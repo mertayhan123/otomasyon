@@ -33,7 +33,7 @@ export default function RootLayout({
         data-theme
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
-        <AuthProvider>
+       <AuthProvider>
           <ThemeProvider>
             <Header />
             <main>{children}</main>

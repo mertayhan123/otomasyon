@@ -1,6 +1,6 @@
 "use client";
 import React, { useState } from "react";
-import { signOut } from "next-auth/react";
+import { signOut, useSession } from "next-auth/react";
 
 const Header = () => {
   const handleLogout = async () => {
@@ -11,6 +11,8 @@ const Header = () => {
     // sidebar'ın açık/kapalı durumunu değiştir
     setSidebarOpen(!sidebarOpen);
   };
+  const { data: session } = useSession();
+  console.log(session); 
   return (
     <div className="relative">
       <div
@@ -60,6 +62,19 @@ const Header = () => {
             Otamasyon
           </a>
         </div>
+        <div>
+          {session ? (
+            <a href="/pages/main" className="btn btn-ghost">
+              {session.user?.name}
+            </a>
+          ) : (
+            <a href="/pages/login" className="btn btn-ghost">
+              Login
+            </a>
+          )}
+        </div>
+          
+        
         <div className="flex-none">
           <label className="swap swap-rotate">
             <input

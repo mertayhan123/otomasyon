@@ -13,6 +13,7 @@ export default function LoginForm() {
   const router = useRouter();
 
   const handleSubmit = async (e: { preventDefault: () => void; }) => {
+    router.push("/pages/register");
     e.preventDefault();
 
     try {
@@ -26,8 +27,7 @@ export default function LoginForm() {
         setError("Invalid Credentials");
         return;
       }
-
-      router.replace("/");
+      signIn()
     } catch (error) {
       console.log(error);
     }
@@ -58,9 +58,9 @@ export default function LoginForm() {
             </div>
           )}
 
-          <Link className="text-sm mt-3 text-right" href={"/register"}>
+          <a className="text-sm mt-3 text-right" onClick={handleSubmit} >
             Don't have an account? <span className="underline">Register</span>
-          </Link>
+          </a>
         </form>
       </div>
     </div>
