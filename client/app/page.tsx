@@ -30,6 +30,24 @@ const sensorData = [
     type: "Temperature",
     location: "Engine",
   },
+  {
+    id: 5,
+    name: "Sensor 5",
+    type: "Temperature",
+    location: "Engine",
+  },
+  {
+    id: 6,
+    name: "Sensor 6",
+    type: "Temperature",
+    location: "Engine",
+  },
+  {
+    id: 7,
+    name: "Sensor 7",
+    type: "Temperature",
+    location: "Engine",
+  },
 ];
 
 const motorData = [

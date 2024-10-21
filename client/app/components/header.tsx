@@ -14,7 +14,7 @@ const Header = () => {
           sidebarOpen ? "translate-x-0 z-10" : "-translate-x-full"
         }`}
       >
-        <h2 className="text-2xl font-semibold mb-4">Sidebar Title</h2>
+        <h2 className="text-2xl font-semibold mb-4">Bilesenler</h2>
         <ul>
           <li className="mb-2">
             <a href="/pages/sensorler" className="text-white">
