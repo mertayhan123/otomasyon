@@ -12,6 +12,8 @@
     "@fseehawer/react-circular-slider": "^2.7.0",
     "@types/bcrypt": "^5.0.2",
     "bcrypt": "^5.1.1",
+    "bcryptjs": "^2.4.3",
+    "dotenv": "^16.4.5",
     "mongoose": "^8.7.2",
     "mz-react-round-slider": "^1.0.3",
     "next": "14.2.15",

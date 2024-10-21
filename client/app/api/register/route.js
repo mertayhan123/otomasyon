@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import { connectDB } from "../../lib/mongodb";
 import User from "../../models/user";
+import bcrypt from "bcryptjs";
 
 // Post fonksiyonu
 export async function POST(request) {
@@ -8,11 +9,14 @@ export async function POST(request) {
     // JSON formatındaki veriyi al
     const { name, email, password } = await request.json();
 
+    // Şifreyi hash'le
+    const hashedPassword = await bcrypt.hash(password, 10);
+
     // Veritabanına bağlan
     await connectDB();
 
-    // Yeni kullanıcı oluştur (şifreyi hashlemeden kaydediyor)
-    await User.create({ name, email, password });
+    // Yeni kullanıcı oluştur
+    await User.create({ name, email, password: hashedPassword });
 
     // Başarılı yanıt döndür
     return NextResponse.json(
@@ -21,6 +25,10 @@ export async function POST(request) {
     );
   } catch (error) {
     // Hata durumunda yanıt döndür
-    return NextResponse.json(error);
+    return NextResponse.json({ message: error.message }, { status: 400 });
   }
 }
+
+
+
+

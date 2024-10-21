@@ -1,7 +1,11 @@
 "use client";
 import React, { useState } from "react";
+import { signOut } from "next-auth/react";
 
 const Header = () => {
+  const handleLogout = async () => {
+    await signOut({ redirect: true, callbackUrl: '/pages/login' }); // İsteğe bağlı olarak yönlendirme yapabilirsiniz
+  };
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const toggleSidebar = () => {
     // sidebar'ın açık/kapalı durumunu değiştir
@@ -82,6 +86,9 @@ const Header = () => {
           </label>
         </div>
       </div>
+      <button onClick={handleLogout} className="bg-red-600 text-white font-bold px-4 py-2 rounded">
+      Logout
+    </button>
     </div>
   );
 };
