@@ -12,8 +12,10 @@ export default function LoginForm() {
 
   const router = useRouter();
 
+
+
+
   const handleSubmit = async (e: { preventDefault: () => void; }) => {
-    router.push("/pages/register");
     e.preventDefault();
 
     try {
@@ -58,7 +60,7 @@ export default function LoginForm() {
             </div>
           )}
 
-          <a className="text-sm mt-3 text-right" onClick={handleSubmit} >
+          <a className="text-sm mt-3 text-right" href="/register" >
             Don't have an account? <span className="underline">Register</span>
           </a>
         </form>

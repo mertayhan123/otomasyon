@@ -1,5 +1,5 @@
 import React from "react";
-import SensorCard from "../../components/sensor-card";
+import SensorCard from "../components/sensor-card";
 
 export default function Sensorler() {
   return (

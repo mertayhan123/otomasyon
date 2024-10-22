@@ -1,6 +1,6 @@
 "use client"
 import React from "react";
-import { sensorData } from "../pages/main/page";
+import { sensorData } from "../main/page";
 import styles from "../styles/sensorcard.module.css";
 
 function sensorCard() {

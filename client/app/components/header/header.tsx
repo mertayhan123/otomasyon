@@ -4,7 +4,7 @@ import { signOut, useSession } from "next-auth/react";
 
 const Header = () => {
   const handleLogout = async () => {
-    await signOut({ redirect: true, callbackUrl: '/pages/login' }); // İsteğe bağlı olarak yönlendirme yapabilirsiniz
+    await signOut({ redirect: true, callbackUrl: '/login' }); // İsteğe bağlı olarak yönlendirme yapabilirsiniz
   };
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const toggleSidebar = () => {
@@ -23,13 +23,13 @@ const Header = () => {
         <h2 className="text-2xl font-semibold mb-4">Bilesenler</h2>
         <ul>
           <li className="mb-2">
-            <a href="/pages/sensorler" className="text-white">
+            <a href="/sensorler" className="text-white">
               Sensorler
             </a>
           </li>
 
           <li className="mb-2">
-            <a href="/pages/motorlar" className="text-white">
+            <a href="/motorlar" className="text-white">
               Motorlar
             </a>
           </li>
@@ -58,17 +58,17 @@ const Header = () => {
           </button>
         </div>
         <div className="flex-1">
-          <a href="/" className="btn btn-ghost text-xl">
+          <a href="/main" className="btn btn-ghost text-xl">
             Otamasyon
           </a>
         </div>
         <div>
           {session ? (
-            <a href="/pages/main" className="btn btn-ghost">
+            <a href="/main" className="btn btn-ghost">
               {session.user?.name}
             </a>
           ) : (
-            <a href="/pages/login" className="btn btn-ghost">
+            <a href="/login" className="btn btn-ghost">
               Login
             </a>
           )}

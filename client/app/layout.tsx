@@ -3,8 +3,8 @@ import localFont from "next/font/local";
 import "./globals.css";
 import ThemeProvider from "@/providers/themeprovider";
 import Footer from "./components/footer";
-import Header from "./components/header";
 import { AuthProvider } from "./Providers";
+import ClientHeader from "./components/header/ClientHeader";
 
 const geistSans = localFont({
   src: "./fonts/GeistVF.woff",
@@ -33,9 +33,9 @@ export default function RootLayout({
         data-theme
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
-       <AuthProvider>
+        <AuthProvider>
           <ThemeProvider>
-            <Header />
+            <ClientHeader /> {/* İstemci bileşenini kullan */}
             <main>{children}</main>
           </ThemeProvider>
         </AuthProvider>
