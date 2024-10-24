@@ -1,21 +1,37 @@
 "use client";
 
 import MotorCard from "@/app/components/motor-card";
-import React, { useState } from "react";
+import { useSession } from "next-auth/react";
+import { useRouter } from "next/navigation";
+import React, { useEffect, useState } from "react";
 
 function Motorlar() {
+  const [cards, setCards] = useState<Card[]>([]); 
+
+  const { data: session, status } = useSession(); // useSession ile oturum durumunu al
+  const router = useRouter(); // Yönlendirme için useRouter
+
+  // Oturum durumu değiştiğinde kontrol et
+  useEffect(() => {
+    if (status === "unauthenticated") {
+      router.push("/login"); // Oturum yoksa login sayfasına yönlendir
+    }
+  }, [status, router]);
+
+  // Eğer oturum durumu "loading" ise yükleniyor göstergesi
+  if (status === "loading") {
+    return <div>Loading...</div>; // Yüklenirken bir şey render et
+  }
 
   interface Card {
     id: number;
   }
+  console.log(cards);
 
-  const [cards, setCards] = useState<Card[]>([]); 
 
   const addCard = () => {
     setCards((prevCards) => [...prevCards, { id: prevCards.length }]);
   };
-
-  console.log(cards);
 
   const removeCard = (id: number) => {
     setCards((prevCards) => prevCards.filter(card => card.id !== id));

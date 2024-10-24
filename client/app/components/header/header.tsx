@@ -100,10 +100,11 @@ const Header = () => {
             </svg>
           </label>
         </div>
-      </div>
-      <button onClick={handleLogout} className="bg-red-600 text-white font-bold px-4 py-2 rounded">
+        <button onClick={handleLogout} className="btn font-bold px-4 m-3 py-2 rounded">
       Logout
     </button>
+      </div>
+     
     </div>
   );
 };

@@ -1,7 +1,7 @@
-
 "use client";
-import React from "react";
-import { useSession } from "next-auth/react"; // next-auth'dan useSession'i içe aktar
+import React, { useEffect } from "react";
+import { useSession } from "next-auth/react";
+import { useRouter } from "next/navigation";
 import MotorTable from "@/app/components/motor-table";
 import SensorTable from "@/app/components/sensor-table";
 
@@ -24,8 +24,21 @@ const motorData = [
 ];
 
 function Home() {
-  const { data: session } = useSession();
-console.log(session);  
+  const { data: session, status } = useSession(); 
+  const router = useRouter();
+
+  useEffect(() => {
+    if (status === "unauthenticated") {
+      router.push("/login");
+    }
+  }, [status, router]);
+
+  // Eğer oturum durumu "loading" ise boş dön
+  if (status === "loading") {
+    return null; // Yüklenirken hiçbir şey render etme
+  }
+
+  // Eğer oturum açılmışsa sayfanın içeriğini render et
   return (
     <>
       <div className="card bg-base-100 shadow-xl">
@@ -72,6 +85,5 @@ console.log(session);
   );
 }
 
-// Home bileşenini koruma altına al ve dışa aktar
-export default (Home);
+export default Home;
 export { sensorData, motorData };
