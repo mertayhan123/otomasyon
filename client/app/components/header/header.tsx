@@ -1,18 +1,36 @@
 "use client";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { signOut, useSession } from "next-auth/react";
 
 const Header = () => {
-  const handleLogout = async () => {
-    await signOut({ redirect: true, callbackUrl: '/login' }); // İsteğe bağlı olarak yönlendirme yapabilirsiniz
-  };
+  const [theme, setTheme] = useState("light"); // Varsayılan tema
   const [sidebarOpen, setSidebarOpen] = useState(false);
+  const { data: session } = useSession();
+
+  // Tema durumunu localStorage'dan yükle
+  useEffect(() => {
+    const savedTheme = localStorage.getItem("theme");
+    if (savedTheme) {
+      setTheme(savedTheme);
+      document.documentElement.setAttribute("data-theme", savedTheme);
+    }
+  }, []);
+
   const toggleSidebar = () => {
-    // sidebar'ın açık/kapalı durumunu değiştir
     setSidebarOpen(!sidebarOpen);
   };
-  const { data: session } = useSession();
-  console.log(session); 
+
+  const handleLogout = async () => {
+    await signOut({ redirect: true, callbackUrl: "/login" });
+  };
+
+  const toggleTheme = () => {
+    const newTheme = theme === "light" ? "dark" : "light";
+    setTheme(newTheme);
+    document.documentElement.setAttribute("data-theme", newTheme);
+    localStorage.setItem("theme", newTheme); // Tema durumunu sakla
+  };
+
   return (
     <div className="relative">
       <div
@@ -20,14 +38,13 @@ const Header = () => {
           sidebarOpen ? "translate-x-0 z-10" : "-translate-x-full"
         }`}
       >
-        <h2 className="text-2xl font-semibold mb-4">Bilesenler</h2>
+        <h2 className="text-2xl font-semibold mb-4">Bileşenler</h2>
         <ul>
           <li className="mb-2">
             <a href="/sensorler" className="text-white">
-              Sensorler
+              Sensörler
             </a>
           </li>
-
           <li className="mb-2">
             <a href="/motorlar" className="text-white">
               Motorlar
@@ -37,7 +54,7 @@ const Header = () => {
       </div>
       <div
         className={`navbar bg-base-100 transition-transform duration-300 ${
-          sidebarOpen ? "transform translate-x-64 " : ""
+          sidebarOpen ? "transform translate-x-64" : ""
         }`}
       >
         <div className="flex-none">
@@ -59,7 +76,7 @@ const Header = () => {
         </div>
         <div className="flex-1">
           <a href="/main" className="btn btn-ghost text-xl">
-            Otamasyon
+            Otomasyon
           </a>
         </div>
         <div>
@@ -73,14 +90,13 @@ const Header = () => {
             </a>
           )}
         </div>
-          
-        
         <div className="flex-none">
           <label className="swap swap-rotate">
             <input
               type="checkbox"
               className="theme-controller"
-              value="synthwave"
+              checked={theme === "dark"}
+              onChange={toggleTheme}
             />
             <svg
               className="swap-off h-10 w-10 fill-current"
@@ -89,8 +105,6 @@ const Header = () => {
             >
               <path d="M5.64,17l-.71.71a1,1,0,0,0,0,1.41,1,1,0,0,0,1.41,0l.71-.71A1,1,0,0,0,5.64,17ZM5,12a1,1,0,0,0-1-1H3a1,1,0,0,0,0,2H4A1,1,0,0,0,5,12Zm7-7a1,1,0,0,0,1-1V3a1,1,0,0,0-2,0V4A1,1,0,0,0,12,5ZM5.64,7.05a1,1,0,0,0,.7.29,1,1,0,0,0,.71-.29,1,1,0,0,0,0-1.41l-.71-.71A1,1,0,0,0,4.93,6.34Zm12,.29a1,1,0,0,0,.7-.29l.71-.71a1,1,0,1,0-1.41-1.41L17,5.64a1,1,0,0,0,0,1.41A1,1,0,0,0,17.66,7.34ZM21,11H20a1,1,0,0,0,0,2h1a1,1,0,0,0,0-2Zm-9,8a1,1,0,0,0-1,1v1a1,1,0,0,0,2,0V20A1,1,0,0,0,12,19ZM18.36,17A1,1,0,0,0,17,18.36l.71.71a1,1,0,0,0,1.41,0,1,1,0,0,0,0-1.41ZM12,6.5A5.5,5.5,0,1,0,17.5,12,5.51,5.51,0,0,0,12,6.5Zm0,9A3.5,3.5,0,1,1,15.5,12,3.5,3.5,0,0,1,12,15.5Z" />
             </svg>
-
-            {/* moon icon */}
             <svg
               className="swap-on h-10 w-10 fill-current"
               xmlns="http://www.w3.org/2000/svg"
@@ -100,11 +114,13 @@ const Header = () => {
             </svg>
           </label>
         </div>
-        <button onClick={handleLogout} className="btn font-bold px-4 m-3 py-2 rounded">
-      Logout
-    </button>
+        <button
+          onClick={handleLogout}
+          className="btn font-bold px-4 m-3 py-2 rounded"
+        >
+          Logout
+        </button>
       </div>
-     
     </div>
   );
 };
