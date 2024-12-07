@@ -21,7 +21,10 @@ const Header = () => {
   };
 
   const handleLogout = async () => {
-    await signOut({ redirect: true, callbackUrl: "/login" });
+    const confirmed = window.confirm("Emin misiniz? Çıkış yapmak istediğinize emin misiniz?");
+    if (confirmed) {
+      await signOut({ redirect: true, callbackUrl: "/login" });
+    }
   };
 
   const toggleTheme = () => {
@@ -74,19 +77,12 @@ const Header = () => {
             </svg>
           </button>
         </div>
-        <div className="flex-1">
-          <a href="/main" className="btn btn-ghost text-xl">
-            Otomasyon
-          </a>
-        </div>
-        <div>
+        <div className="flex-1 flex justify-center">
           {session ? (
-            <a href="/main" className="btn btn-ghost">
-              {session.user?.name}
-            </a>
+            <span className="text-2xl font-bold">{session.user?.name}</span>
           ) : (
-            <a href="/login" className="btn btn-ghost">
-              Login
+            <a href="/login" className="btn btn-ghost text-xl">
+              Otomasyon
             </a>
           )}
         </div>

@@ -8,6 +8,7 @@ export default function SignUp() {
     const [password, setpassword] = useState("");
     const [error, seterror] = useState("");
     const router = useRouter();
+    
   
     const handleSubmit = async (e: any) => {
       e.preventDefault();
@@ -67,7 +68,7 @@ export default function SignUp() {
             type="text"
             placeholder="Adınız"
             className="input w-full "
-            onChange={(e) => setname(e.target.value)}
+            onChange={(e) => setname((e.target.value).toUpperCase())}
           />
           <input
             type="email"
