@@ -1,16 +1,33 @@
+// components/MotorTable.tsx
+
 import React from "react";
 
-function motorTable({ motorData }: any) {
-  return motorData.map((item: any) => (
-    <>
-      <tr className="hover">
-        <th>{item.id}</th>
-        <td>{item.name}</td>
-        <td>{item.type}</td>
-        <td>{item.location}</td>
-      </tr>
-    </>
-  ));
+// Motor verisinin yapısını tanımlayan arayüz
+interface Motor {
+  id: number;
+  name: string;
+  type: string;
+  location: string;
 }
 
-export default motorTable;
+// Bileşenin prop'larının tipini tanımlayan arayüz
+interface MotorTableProps {
+  motorData: Motor[];
+}
+
+const MotorTable: React.FC<MotorTableProps> = ({ motorData }) => {
+  return (
+    <>
+      {motorData.map((motor) => (
+        <tr key={motor.id}>
+          <th>{motor.id}</th>
+          <td>{motor.name}</td>
+          <td>{motor.type}</td>
+          <td>{motor.location}</td>
+        </tr>
+      ))}
+    </>
+  );
+};
+
+export default MotorTable;

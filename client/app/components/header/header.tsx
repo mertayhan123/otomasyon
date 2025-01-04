@@ -37,9 +37,8 @@ const Header = () => {
   return (
     <div className="relative">
       <div
-        className={`sidebar z-10 fixed top-0 left-0 w-64 h-full bg-gray-800 p-4 text-white transition-transform duration-300 ${
-          sidebarOpen ? "translate-x-0 z-10" : "-translate-x-full"
-        }`}
+        className={`sidebar z-10 fixed top-0 left-0 w-64 h-full bg-gray-800 p-4 text-white transition-transform duration-300 ${sidebarOpen ? "translate-x-0 z-10" : "-translate-x-full"
+          }`}
       >
         <h2 className="text-2xl font-semibold mb-4">Bileşenler</h2>
         <ul>
@@ -56,9 +55,8 @@ const Header = () => {
         </ul>
       </div>
       <div
-        className={`navbar bg-base-100 transition-transform duration-300 ${
-          sidebarOpen ? "transform translate-x-64" : ""
-        }`}
+        className={`navbar bg-base-100 transition-transform duration-300 ${sidebarOpen ? "transform translate-x-64" : ""
+          }`}
       >
         <div className="flex-none">
           <button onClick={toggleSidebar} className="btn btn-square btn-ghost">
@@ -79,7 +77,11 @@ const Header = () => {
         </div>
         <div className="flex-1 flex justify-center">
           {session ? (
-            <span className="text-2xl font-bold">{session.user?.name}</span>
+           <a href="/main">
+             <span className="text-2xl font-bold">{session.user?.name?.toUpperCase()}
+             </span>
+           </a>
+           
           ) : (
             <a href="/login" className="btn btn-ghost text-xl">
               Otomasyon

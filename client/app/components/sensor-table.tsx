@@ -1,16 +1,33 @@
+// components/SensorTable.tsx
+
 import React from "react";
 
-function sensorTable({ sensorData }: any) {
-  return sensorData.map((item: any) => (
-    <>
-      <tr className="hover">
-        <th>{item.id}</th>
-        <td>{item.name}</td>
-        <td>{item.type}</td>
-        <td>{item.location}</td>
-      </tr>
-    </>
-  ));
+// Sensör verisinin yapısını tanımlayan arayüz
+interface Sensor {
+  id: number;
+  name: string;
+  type: string;
+  location: string;
 }
 
-export default sensorTable;
+// Bileşenin prop'larının tipini tanımlayan arayüz
+interface SensorTableProps {
+  sensorData: Sensor[];
+}
+
+const SensorTable: React.FC<SensorTableProps> = ({ sensorData }) => {
+  return (
+    <>
+      {sensorData.map((sensor) => (
+        <tr key={sensor.id}>
+          <th>{sensor.id}</th>
+          <td>{sensor.name}</td>
+          <td>{sensor.type}</td>
+          <td>{sensor.location}</td>
+        </tr>
+      ))}
+    </>
+  );
+};
+
+export default SensorTable;
