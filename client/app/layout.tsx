@@ -35,8 +35,14 @@ export default function RootLayout({
       >
         <AuthProvider>
           <ThemeProvider>
-            <ClientHeader /> {/* İstemci bileşenini kullan */}
-            <main>{children}</main>
+          <ClientHeader /> {/* İstemci bileşenini kullan */}
+
+            <main  >
+              <div className="h-16">
+
+              </div>
+              {children}
+            </main>
           </ThemeProvider>
         </AuthProvider>
       </body>

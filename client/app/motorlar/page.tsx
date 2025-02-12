@@ -37,7 +37,7 @@ function Motorlar() {
   return (
     <div className="flex flex-col items-center h-5/6 px-4 lg:px-16">
       <button
-        className="btn btn-primary mb-4"
+        className="btn btn-primary mt-16" 
         onClick={addCard}
       >
         Ekle
