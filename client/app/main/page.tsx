@@ -67,7 +67,7 @@ const Home: React.FC = () => {
 
   // Oturum açılmışsa sayfanın içeriğini render et
   return (
-    <div className="container mx-auto p-4 space-y-6">
+    <div className="container mx-auto px-4 space-y-6">
       <div className="flex flex-col lg:flex-row gap-6">
         {/* Sol Bölüm: Motorlar ve Sensorler */}
         <div className="flex-1 space-y-6">

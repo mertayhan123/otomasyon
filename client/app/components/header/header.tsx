@@ -69,7 +69,7 @@ const Header = () => {
       {/* Navbar */}
       <div className="w-full">
         <div
-          className={`navbar bg-base-100 shadow-md w-full z-10 h-16 flex justify-between px-4 transition-transform duration-300`}
+          className={`navbar bg-base-100 shadow-md w-full  z-10 h-16 flex justify-between p-4 mb-8 transition-transform duration-300`}
         >
           {/* Sidebar Toggle Butonu */}
           <div className="flex-none">
@@ -123,9 +123,6 @@ const Header = () => {
             )}
           </div>
         </div>
-
-        {/* Navbar'ın Altındaki İçeriğin Çakışmaması İçin Boşluk */}
-        <div className="h-16"></div>
       </div>
     </div>
   );
