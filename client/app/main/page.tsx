@@ -8,7 +8,6 @@ import StatusPanel from "@/app/components/StatusPanel";
 
 // pages/index.tsx veya app/page.tsx
 
-
 interface Sensor {
   id: number;
   name: string;
@@ -77,7 +76,9 @@ const Home: React.FC = () => {
             <div className="card-body">
               <div className="flex justify-between items-center mb-4">
                 <h2 className="card-title">Motorlar</h2>
-                <button className="btn btn-primary btn-sm">Yeni Motor Ekle</button>
+                <button className="btn btn-primary btn-sm">
+                  Yeni Motor Ekle
+                </button>
               </div>
               <div className="overflow-x-auto">
                 <table className="table w-full table-zebra">
@@ -102,7 +103,9 @@ const Home: React.FC = () => {
             <div className="card-body">
               <div className="flex justify-between items-center mb-4">
                 <h2 className="card-title">Sensorler</h2>
-                <button className="btn btn-primary btn-sm">Yeni Sensör Ekle</button>
+                <button className="btn btn-primary btn-sm">
+                  Yeni Sensör Ekle
+                </button>
               </div>
               <div className="overflow-x-auto">
                 <table className="table w-full table-zebra">

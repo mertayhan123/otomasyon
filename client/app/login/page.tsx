@@ -7,8 +7,5 @@ export default async function Home() {
   const session = await getServerSession(authOptions);
 
   if (session) redirect("/main");
-  return (
-    
-   <LoginForm />
-  );
+  return <LoginForm />;
 }

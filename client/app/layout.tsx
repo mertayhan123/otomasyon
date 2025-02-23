@@ -2,7 +2,6 @@ import type { Metadata } from "next";
 import localFont from "next/font/local";
 import "./globals.css";
 import ThemeProvider from "@/providers/themeprovider";
-import Footer from "./components/footer";
 import { AuthProvider } from "./Providers";
 import ClientHeader from "./components/header/ClientHeader";
 
@@ -35,14 +34,8 @@ export default function RootLayout({
       >
         <AuthProvider>
           <ThemeProvider>
-          <ClientHeader /> {/* İstemci bileşenini kullan */}
-
-            <main  >
-              <div className="h-16">
-
-              </div>
-              {children}
-            </main>
+            <ClientHeader />
+            <main>{children}</main>
           </ThemeProvider>
         </AuthProvider>
       </body>

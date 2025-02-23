@@ -2,10 +2,6 @@
 import { useSession } from "next-auth/react";
 import React from "react";
 
-
-
-
-
 function Home() {
   const { data: session } = useSession();
 
@@ -53,17 +49,16 @@ function Home() {
 
         <div>
           {session ? (
-            <a href="/main" className="btn btn-ghost">
+            <a href="/main" className="btn btn-success mt-6">
               {session.user?.name}
             </a>
           ) : (
-            <a href="/login" className="btn btn-ghost">
+            <a href="/login" className="btn btn-success mt-6">
               Login
             </a>
           )}
         </div>
       </div>
-     
     </div>
   );
 }

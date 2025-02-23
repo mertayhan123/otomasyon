@@ -1,5 +1,4 @@
 "use client";
-
 import Link from "next/link";
 import { useState } from "react";
 import { signIn } from "next-auth/react";
@@ -12,10 +11,7 @@ export default function LoginForm() {
 
   const router = useRouter();
 
-
-
-
-  const handleSubmit = async (e: { preventDefault: () => void; }) => {
+  const handleSubmit = async (e: { preventDefault: () => void }) => {
     e.preventDefault();
 
     try {
@@ -25,45 +21,55 @@ export default function LoginForm() {
         redirect: false,
       });
 
-      if (res && res.error) {
-        setError("Invalid Credentials");
+      if (res?.error) {
+        setError("Invalid credentials, please try again.");
         return;
       }
-      signIn()
+      router.push("/main");
     } catch (error) {
-      console.log(error);
+      console.error(error);
     }
   };
 
   return (
-    <div className="grid place-items-center h-screen">
-      <div className="shadow-lg p-5 rounded-lg border-t-4 border-green-400">
-        <h1 className="text-xl font-bold my-4">Login</h1>
-
-        <form onSubmit={handleSubmit} className="flex flex-col gap-3">
+    <div className="flex min-h-screen items-center justify-center bg-gray-100">
+      <div className="w-full max-w-md bg-white p-6 rounded-lg shadow-md">
+        <h2 className="text-center text-2xl font-semibold mb-4">Login</h2>
+        <form onSubmit={handleSubmit} className="space-y-4">
           <input
-            onChange={(e) => setEmail(e.target.value)}
-            type="text"
+            type="email"
             placeholder="Email"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+            required
+            className="w-full px-4 py-2 border rounded-md focus:ring focus:ring-blue-300"
           />
           <input
-            onChange={(e) => setPassword(e.target.value)}
             type="password"
             placeholder="Password"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+            required
+            className="w-full px-4 py-2 border rounded-md focus:ring focus:ring-blue-300"
           />
-          <button className="bg-green-600 text-white font-bold cursor-pointer px-6 py-2">
+          <button
+            type="submit"
+            className="w-full bg-blue-600 text-white py-2 rounded-md hover:bg-blue-700"
+          >
             Login
           </button>
-          {error && (
-            <div className="bg-red-500 text-white w-fit text-sm py-1 px-3 rounded-md mt-2">
-              {error}
-            </div>
-          )}
-
-          <a className="text-sm mt-3 text-right" href="/register" >
-            Don't have an account? <span className="underline">Register</span>
-          </a>
         </form>
+        {error && (
+          <div className="mt-3 p-2 text-red-700 bg-red-200 border border-red-500 rounded-md">
+            {error}
+          </div>
+        )}
+        <p className="mt-4 text-center text-sm">
+          Don't have an account?{" "}
+          <Link href="/register" className="text-blue-600 hover:underline">
+            Register
+          </Link>
+        </p>
       </div>
     </div>
   );
