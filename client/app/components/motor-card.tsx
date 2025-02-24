@@ -1,25 +1,46 @@
 "use client";
 import React, { useState } from "react";
-
+import { useSession } from "next-auth/react";
 
 interface MotorCardProps {
   onRemove: () => void;
   cardId: number | string;
 }
 
-const DeviceControlPanel: React.FC<MotorCardProps> = () => {
+const DeviceControlPanel: React.FC<MotorCardProps> = ({ onRemove }) => {
+  const { data: session } = useSession();
+  console.log(session);
   // Varsayılan ayar değerleri
   const [voltage, setVoltage] = useState<number>(220); // Voltaj (V)
   const [temperature, setTemperature] = useState<number>(25); // Sıcaklık (°C)
   const [isDeviceOn, setIsDeviceOn] = useState<boolean>(false); // Cihazın açık/kapalı durumu
   const [alertMessage, setAlertMessage] = useState<string>("");
 
-  // Ayarları kaydetme simülasyonu
-  const handleSaveSettings = (): void => {
-    setAlertMessage("Ayarlar başarıyla kaydedildi!");
-    setTimeout(() => {
-      setAlertMessage("");
-    }, 3000);
+  // Ayarları kaydetme simülasyonu ve API çağrısı
+  const handleSaveSettings = async (): Promise<void> => {
+    // Ayar verilerini API'ya gönderiyoruz.
+    const settings = { voltage, temperature, isDeviceOn };
+    try {
+      const response = await fetch("/api/motorkayit", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(settings),
+      });
+      const data = await response.json();
+      if (response.ok && data.success) {
+        setAlertMessage("Ayarlar başarıyla kaydedildi!");
+        onRemove(); // İsteğe bağlı olarak bileşeni kaldırabilir ya da başka bir işlem tetikleyebilirsiniz.
+        setTimeout(() => {
+          setAlertMessage("");
+        }, 3000);
+      } else {
+        setAlertMessage("Bir hata oluştu: " + (data.message || "Bilinmeyen hata"));
+      }
+    } catch (error: any) {
+      setAlertMessage("Bir hata oluştu: " + error.message);
+    }
   };
 
   return (

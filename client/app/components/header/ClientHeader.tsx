@@ -10,5 +10,5 @@ export default function ClientHeader() {
   const hideHeaderOnPaths = ["/login", "/register", "/"];
   const shouldHideHeader = hideHeaderOnPaths.includes(pathname);
 
-  return !shouldHideHeader ? <Header /> : null;
+  return !shouldHideHeader ? <Header  /> : null;
 }

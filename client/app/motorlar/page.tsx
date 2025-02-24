@@ -1,13 +1,13 @@
 "use client";
+import React, { useEffect, useState } from "react";
 import MotorCard from "@/app/components/motor-card";
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
-import React, { useEffect, useState } from "react";
 
 const Motorlar: React.FC = () => {
   const { data: session, status } = useSession();
   const router = useRouter();
-  const [showPopup, setShowPopup] = useState(false);
+  const [showPopup, setShowPopup] = useState<boolean>(false);
 
   useEffect(() => {
     if (status === "unauthenticated") {
@@ -19,11 +19,11 @@ const Motorlar: React.FC = () => {
     return <div>Loading...</div>;
   }
 
-  const handleOpenPopup = () => {
+  const handleOpenPopup = (): void => {
     setShowPopup(true);
   };
 
-  const handleClosePopup = () => {
+  const handleClosePopup = (): void => {
     setShowPopup(false);
   };
 
