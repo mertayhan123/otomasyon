@@ -1,16 +1,13 @@
 "use client";
-
 import MotorCard from "@/app/components/motor-card";
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import React, { useEffect, useState } from "react";
 
-function Motorlar() {
-  // Kartların listesini tutan state. Burada ID atıyoruz.
-  const [cards, setCards] = useState<{ id: number }[]>([]);
-
+const Motorlar: React.FC = () => {
   const { data: session, status } = useSession();
   const router = useRouter();
+  const [showPopup, setShowPopup] = useState(false);
 
   useEffect(() => {
     if (status === "unauthenticated") {
@@ -22,32 +19,33 @@ function Motorlar() {
     return <div>Loading...</div>;
   }
 
-  const addCard = () => {
-    setCards((prevCards) => [...prevCards, { id: prevCards.length }]);
+  const handleOpenPopup = () => {
+    setShowPopup(true);
   };
 
-  const removeCard = (id: number) => {
-    setCards((prevCards) => prevCards.filter((card) => card.id !== id));
+  const handleClosePopup = () => {
+    setShowPopup(false);
   };
 
   return (
-    <div className="flex flex-col items-center h-5/6 px-4 lg:px-16">
-      <button className="btn btn-primary mt-16" onClick={addCard}>
+    <div className="flex flex-col items-center h-full px-4 lg:px-16 pt-20">
+      <button className="btn btn-primary mt-16" onClick={handleOpenPopup}>
         Ekle
       </button>
-      <div
-        data-theme
-        className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 w-full mt-4"
-      >
-        {cards.map((card) => (
-          <div key={card.id} className="relative">
-            {/* Her kart için cardId propu veriyoruz */}
-            <MotorCard cardId={card.id} onRemove={() => removeCard(card.id)} />
+      {showPopup && (
+        <div className="fixed inset-0 flex items-center justify-center z-50">
+          {/* Arka plan karartması, tıklandığında popup'ı kapatır */}
+          <div
+            className="absolute inset-0 bg-black opacity-50"
+            onClick={handleClosePopup}
+          ></div>
+          <div className="relative bg-base-100 rounded-2xl shadow-2xl p-6 z-10">
+            <MotorCard onRemove={handleClosePopup} cardId={0} />
           </div>
-        ))}
-      </div>
+        </div>
+      )}
     </div>
   );
-}
+};
 
 export default Motorlar;

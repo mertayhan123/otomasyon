@@ -1,8 +1,5 @@
-// components/SensorTable.tsx
-
 import React from "react";
 
-// Sensör verisinin yapısını tanımlayan arayüz
 interface Sensor {
   id: number;
   name: string;
@@ -10,7 +7,6 @@ interface Sensor {
   location: string;
 }
 
-// Bileşenin prop'larının tipini tanımlayan arayüz
 interface SensorTableProps {
   sensorData: Sensor[];
 }
@@ -19,7 +15,7 @@ const SensorTable: React.FC<SensorTableProps> = ({ sensorData }) => {
   return (
     <>
       {sensorData.map((sensor) => (
-        <tr key={sensor.id}>
+        <tr key={sensor.id} className="hover:bg-gray-100 transition-colors">
           <th>{sensor.id}</th>
           <td>{sensor.name}</td>
           <td>{sensor.type}</td>

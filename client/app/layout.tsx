@@ -35,7 +35,7 @@ export default function RootLayout({
         <AuthProvider>
           <ThemeProvider>
             <ClientHeader />
-            <main>{children}</main>
+            <main className="my-5">{children}</main>
           </ThemeProvider>
         </AuthProvider>
       </body>
