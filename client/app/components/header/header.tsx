@@ -42,12 +42,18 @@ const Header = () => {
         <h2 className="text-3xl font-bold mb-8 border-b pb-4">Components</h2>
         <ul className="space-y-6">
           <li>
-            <a href="/sensorler" className="hover:text-indigo-400 transition-colors">
+            <a
+              href="/sensorler"
+              className="hover:text-indigo-400 transition-colors"
+            >
               Sensors
             </a>
           </li>
           <li>
-            <a href="/motorlar" className="hover:text-indigo-400 transition-colors">
+            <a
+              href="/motorlar"
+              className="hover:text-indigo-400 transition-colors"
+            >
               Motors
             </a>
           </li>
@@ -67,18 +73,24 @@ const Header = () => {
 
       {/* Navbar */}
       <div className="w-full">
-        <nav className="navbar bg-base-100 shadow-md fixed top-0 left-0 w-full z-20 h-16 flex justify-between items-center px-6 transition-all">
-          {/* Sidebar Toggle Butonu */}
+        <nav className="navbar bg-base-100 shadow-md block top-0 left-0 w-full z-20 h-16 flex justify-between items-center px-6 transition-all">
+          {/* Sidebar Toggle Button */}
           <div className="flex-none">
-            <button onClick={toggleSidebar} className="btn btn-square btn-ghost text-2xl">
+            <button
+              onClick={toggleSidebar}
+              className="btn btn-square btn-ghost text-2xl"
+            >
               ☰
             </button>
           </div>
 
-          {/* Ortadaki Başlık */}
+          {/* Center Title */}
           <div className="flex-1 text-center">
             {session ? (
-              <a href="/main" className="text-2xl font-bold uppercase hover:text-indigo-600 transition-colors">
+              <a
+                href="/main"
+                className="text-2xl font-bold uppercase hover:text-indigo-600 transition-colors"
+              >
                 {session.user?.name}
               </a>
             ) : (
@@ -88,7 +100,7 @@ const Header = () => {
             )}
           </div>
 
-          {/* Sağdaki Butonlar */}
+          {/* Right-side Buttons */}
           <div className="flex-none flex items-center space-x-6">
             {/* Theme Toggle */}
             <label className="swap swap-rotate">
