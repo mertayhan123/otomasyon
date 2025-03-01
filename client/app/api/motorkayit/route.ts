@@ -2,7 +2,7 @@
 import { NextResponse } from 'next/server';
 import { getServerSession } from "next-auth/next";
 import { authOptions } from "@//app/api/auth/[...nextauth]/route"; // NextAuth konfigürasyonunuzun yolu
-import { connectDB } from "../../lib/mongodb";
+import connectDB from "../../lib/mongodb";
 import User from "../../models/User";
 import Motor from "../../models/Motor";
 

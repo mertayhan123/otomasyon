@@ -1,15 +1,19 @@
 import React, { useState } from "react";
 
-function SensorForm({ onClose }: { onClose: () => void }) {
+function SensorForm({
+  onClose,
+  onSubmit,
+}: {
+  onClose: () => void;
+  onSubmit: (sensor: any) => void;
+}) {
   const [name, setName] = useState("");
   const [type, setType] = useState("");
   const [location, setLocation] = useState("");
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    // Form verilerini işleyin
-    console.log({ name, type, location });
-    onClose();
+    onSubmit({ name, type, location });
   };
 
   return (

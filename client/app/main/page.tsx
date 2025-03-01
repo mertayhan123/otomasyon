@@ -1,11 +1,12 @@
 "use client";
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import MotorTable from "../components/motor-table";
 import SensorTable from "../components/sensor-table";
 import StatusPanel from "../components/StatusPanel";
 import AlarmPanel from "../components/AlarmPanel";
+import SensorForm from "../components/sensor-form";
 
 interface Sensor {
   id: number;
@@ -48,16 +49,6 @@ export const alarmData: Alarm[] = [
   },
 ];
 
-export const sensorData: Sensor[] = [
-  { id: 1, name: "Sensor 1", type: "Temperature", location: "Engine" },
-  { id: 2, name: "Sensor 2", type: "Temperature", location: "Engine" },
-  { id: 3, name: "Sensor 3", type: "Temperature", location: "Engine" },
-  { id: 4, name: "Sensor 4", type: "Temperature", location: "Engine" },
-  { id: 5, name: "Sensor 5", type: "Temperature", location: "Engine" },
-  { id: 6, name: "Sensor 6", type: "Temperature", location: "Engine" },
-  { id: 7, name: "Sensor 7", type: "Temperature", location: "Engine" },
-];
-
 export const motorData: Motor[] = [
   { id: 1, name: "Motor 1", type: "Electric", location: "Engine" },
   { id: 2, name: "Motor 2", type: "Hydraulic", location: "Engine" },
@@ -75,12 +66,32 @@ const statusData = {
 const Home: React.FC = () => {
   const { data: session, status } = useSession();
   const router = useRouter();
+  const [sensors, setSensors] = useState<Sensor[]>([]);
+  const [isFormVisible, setFormVisible] = useState(false);
 
   useEffect(() => {
     if (status === "unauthenticated") {
       router.push("/login");
     }
   }, [status, router]);
+
+  useEffect(() => {
+    const fetchSensors = async () => {
+      try {
+        const response = await fetch("/api/getsensor");
+        const data = await response.json();
+        if (data.success) {
+          setSensors(data.sensors);
+        } else {
+          console.error("Sensörler alınamadı:", data.message);
+        }
+      } catch (error) {
+        console.error("Hata:", error);
+      }
+    };
+
+    fetchSensors();
+  }, []);
 
   if (status === "loading") {
     return (
@@ -90,6 +101,29 @@ const Home: React.FC = () => {
     );
   }
 
+  const handleSensor = () => {
+    setFormVisible(true);
+  };
+  const handleSensorSubmit = async (sensor: any) => {
+    try {
+      const response = await fetch("/api/sensorkayit", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(sensor),
+      });
+      const data = await response.json();
+      if (data.success) {
+        setSensors([...sensors, data.sensor]);
+        setFormVisible(false);
+      } else {
+        console.error("Sensor kaydedilemedi:", data.message);
+      }
+    } catch (error) {
+      console.error("Hata:", error);
+    }
+  };
   return (
     <div className="min-h-screen  p-6">
       <div className="max-w-7xl mx-auto bg-white bg-opacity-80 rounded-xl shadow-2xl p-6">
@@ -133,7 +167,10 @@ const Home: React.FC = () => {
               <div className="card-body">
                 <div className="flex justify-between items-center border-b pb-2 mb-4">
                   <h2 className="card-title text-xl">Sensorler</h2>
-                  <button className="btn btn-outline btn-secondary btn-sm">
+                  <button
+                    onClick={handleSensor}
+                    className="btn btn-outline btn-secondary btn-sm"
+                  >
                     Yeni Sensör Ekle
                   </button>
                 </div>
@@ -148,7 +185,7 @@ const Home: React.FC = () => {
                       </tr>
                     </thead>
                     <tbody>
-                      <SensorTable sensorData={sensorData} />
+                      <SensorTable sensorData={sensors} />
                     </tbody>
                   </table>
                 </div>
@@ -158,17 +195,17 @@ const Home: React.FC = () => {
 
           {/* Durum Paneli */}
           <div className="flex flex-col space-y-8">
-            <StatusPanel
-              statusData={{
-                waterPressure: "120 PSI",
-                waterLevel: "75%",
-                phValue: "7.4",
-              }}
-            />
+            <StatusPanel statusData={statusData} />
             <AlarmPanel alarms={alarmData} />
           </div>
         </div>
       </div>
+      {isFormVisible && (
+        <SensorForm
+          onClose={() => setFormVisible(false)}
+          onSubmit={handleSensorSubmit}
+        />
+      )}
     </div>
   );
 };
