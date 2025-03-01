@@ -1,65 +1,172 @@
+"use client";
 import React, { useState } from "react";
 
-function SensorForm({ onClose }: { onClose: () => void }) {
-  const [name, setName] = useState("");
-  const [type, setType] = useState("");
-  const [location, setLocation] = useState("");
+interface SensorFormProps {
+  onClose: () => void;
+  onSensorAdded: () => void;
+}
 
-  const handleSubmit = (e: React.FormEvent) => {
+function SensorForm({ onClose, onSensorAdded }: SensorFormProps) {
+  const [formData, setFormData] = useState({
+    name: "",
+    type: "",
+    location: "",
+    value: 0,
+    unit: "",
+    isActive: true
+  });
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState("");
+
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
+    const { name, value, type } = e.target as HTMLInputElement;
+    setFormData({
+      ...formData,
+      [name]: type === "checkbox" ? (e.target as HTMLInputElement).checked : 
+              type === "number" ? Number(value) : value
+    });
+  };
+
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    // Form verilerini işleyin
-    console.log({ name, type, location });
-    onClose();
+    try {
+      setLoading(true);
+      setError("");
+      
+      const response = await fetch("/api/sensorkayit", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(formData),
+      });
+
+      const data = await response.json();
+      
+      if (data.success) {
+        onSensorAdded();
+        onClose();
+      } else {
+        setError(data.message || "Sensör eklenirken bir hata oluştu");
+      }
+    } catch (err) {
+      setError("Sensör eklenirken bir hata oluştu");
+      console.error("Sensör ekleme hatası:", err);
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
-    <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50">
-      <div className="bg-white p-6 rounded-lg shadow-lg">
-        <h2 className="text-xl font-semibold mb-4">Sensör Ekle</h2>
-        <form onSubmit={handleSubmit}>
-          <div className="mb-4">
-            <label className="block text-sm font-medium mb-1">Ad</label>
-            <input
-              type="text"
-              value={name}
-              onChange={(e) => setName(e.target.value)}
-              className="w-full px-3 py-2 border rounded-lg"
-              required
-            />
+    <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
+      <div className="bg-white dark:bg-gray-800 rounded-xl shadow-2xl p-6 w-full max-w-2xl">
+        <h2 className="text-2xl font-bold text-gray-900 dark:text-white mb-6">Sensör Ekle</h2>
+        
+        {error && (
+          <div className="alert alert-error mb-4">
+            <span>{error}</span>
           </div>
-          <div className="mb-4">
-            <label className="block text-sm font-medium mb-1">Tür</label>
-            <input
-              type="text"
-              value={type}
-              onChange={(e) => setType(e.target.value)}
-              className="w-full px-3 py-2 border rounded-lg"
-              required
-            />
+        )}
+        
+        <form onSubmit={handleSubmit} className="space-y-4">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div className="form-control">
+              <label className="label">
+                <span className="label-text">Sensör Adı</span>
+              </label>
+              <input
+                type="text"
+                name="name"
+                value={formData.name}
+                onChange={handleInputChange}
+                className="input input-bordered w-full"
+                required
+              />
+            </div>
+            
+            <div className="form-control">
+              <label className="label">
+                <span className="label-text">Sensör Tipi</span>
+              </label>
+              <input
+                type="text"
+                name="type"
+                value={formData.type}
+                onChange={handleInputChange}
+                className="input input-bordered w-full"
+                required
+              />
+            </div>
+            
+            <div className="form-control">
+              <label className="label">
+                <span className="label-text">Konum</span>
+              </label>
+              <input
+                type="text"
+                name="location"
+                value={formData.location}
+                onChange={handleInputChange}
+                className="input input-bordered w-full"
+                required
+              />
+            </div>
+            
+            <div className="form-control">
+              <label className="label">
+                <span className="label-text">Değer</span>
+              </label>
+              <input
+                type="number"
+                name="value"
+                value={formData.value}
+                onChange={handleInputChange}
+                className="input input-bordered w-full"
+              />
+            </div>
+            
+            <div className="form-control">
+              <label className="label">
+                <span className="label-text">Birim</span>
+              </label>
+              <input
+                type="text"
+                name="unit"
+                value={formData.unit}
+                onChange={handleInputChange}
+                className="input input-bordered w-full"
+              />
+            </div>
+            
+            <div className="form-control">
+              <label className="label cursor-pointer">
+                <span className="label-text">Aktif</span>
+                <input
+                  type="checkbox"
+                  name="isActive"
+                  checked={formData.isActive}
+                  onChange={handleInputChange}
+                  className="toggle toggle-primary"
+                />
+              </label>
+            </div>
           </div>
-          <div className="mb-4">
-            <label className="block text-sm font-medium mb-1">Konum</label>
-            <input
-              type="text"
-              value={location}
-              onChange={(e) => setLocation(e.target.value)}
-              className="w-full px-3 py-2 border rounded-lg"
-              required
-            />
-          </div>
-          <div className="flex justify-end">
+          
+          <div className="flex justify-end space-x-3 mt-6">
             <button
               type="button"
               onClick={onClose}
-              className="mr-4 px-4 py-2 bg-gray-300 rounded-lg"
+              className="btn btn-outline"
+              disabled={loading}
             >
               İptal
             </button>
             <button
               type="submit"
-              className="px-4 py-2 bg-blue-600 text-white rounded-lg"
+              className="btn btn-primary"
+              disabled={loading}
             >
-              Kaydet
+              {loading ? "Ekleniyor..." : "Kaydet"}
             </button>
           </div>
         </form>

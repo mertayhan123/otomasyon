@@ -29,6 +29,8 @@ export const authOptions: AuthOptions = {
           id: user._id.toString(), // MongoDB ObjectId'yi dizeye çevir
           email: user.email, // E-posta adresi
           name: user.name, // Ad
+          profile: user.profile || {},
+          settings: user.settings || {}
         };
       },
     }),
@@ -51,6 +53,8 @@ export const authOptions: AuthOptions = {
         if (!updatedUser) return token; // Kullanıcı bulunamazsa token'ı döndür
         token.email = updatedUser.email; // E-posta adresini güncelle
         token.name = updatedUser.name; // Adı güncelle
+        token.profile = updatedUser.profile || {};
+        token.settings = updatedUser.settings || {};
       }
       return token; // Token'ı döndür
     },
@@ -60,6 +64,8 @@ export const authOptions: AuthOptions = {
         id: token.id as string,
         email: token.email as string,
         name: token.name as string,
+        profile: token.profile as any,
+        settings: token.settings as any
       };
       return session;
     },

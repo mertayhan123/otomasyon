@@ -9,6 +9,19 @@ const MotorSchema = new mongoose.Schema(
       ref: 'User', 
       required: true 
     },
+    // Motor bilgileri
+    name: {
+      type: String,
+      required: true
+    },
+    type: {
+      type: String,
+      required: true
+    },
+    location: {
+      type: String,
+      required: true
+    },
     // Motor ayarları ve verileri
     voltage: { 
       type: Number, 
@@ -22,9 +35,10 @@ const MotorSchema = new mongoose.Schema(
       type: Boolean, 
       default: false 
     },
-    // İleride eklenebilecek diğer alanlar örneğin performans, konum vs.
-    // performance: { type: Number },
-    // location: { type: String },
+    isActive: {
+      type: Boolean,
+      default: true
+    }
   },
   {
     timestamps: true, // Oluşturulma ve güncellenme tarihlerini otomatik ekler
