@@ -4,6 +4,9 @@ import React, { useState } from 'react';
 interface MotorProps {
   motors: {
     _id: string;
+    name: string;
+    type: string;
+    location: string;
     voltage: number;
     temperature: number;
     isDeviceOn: boolean;
@@ -11,12 +14,22 @@ interface MotorProps {
     updatedAt: string;
   }[];
   onDelete: (id: string) => Promise<void>;
-  onUpdate: (id: string, data: { voltage: number; temperature: number; isDeviceOn: boolean }) => Promise<void>;
+  onUpdate: (id: string, data: { 
+    name: string;
+    type: string;
+    location: string;
+    voltage: number; 
+    temperature: number; 
+    isDeviceOn: boolean 
+  }) => Promise<void>;
 }
 
 const MotorDetails: React.FC<MotorProps> = ({ motors, onDelete, onUpdate }) => {
   const [editingMotor, setEditingMotor] = useState<string | null>(null);
   const [formData, setFormData] = useState({
+    name: "",
+    type: "",
+    location: "",
     voltage: 0,
     temperature: 0,
     isDeviceOn: false
@@ -26,6 +39,9 @@ const MotorDetails: React.FC<MotorProps> = ({ motors, onDelete, onUpdate }) => {
   const handleEdit = (motor: any) => {
     setEditingMotor(motor._id);
     setFormData({
+      name: motor.name,
+      type: motor.type,
+      location: motor.location,
       voltage: motor.voltage,
       temperature: motor.temperature,
       isDeviceOn: motor.isDeviceOn
@@ -40,7 +56,8 @@ const MotorDetails: React.FC<MotorProps> = ({ motors, onDelete, onUpdate }) => {
     const { name, value, type, checked } = e.target;
     setFormData({
       ...formData,
-      [name]: type === "checkbox" ? checked : Number(value)
+      [name]: type === "checkbox" ? checked : 
+              type === "number" ? Number(value) : value
     });
   };
 
@@ -79,6 +96,48 @@ const MotorDetails: React.FC<MotorProps> = ({ motors, onDelete, onUpdate }) => {
               <h3 className="text-xl font-bold text-gray-900 dark:text-white mb-4">Motor Düzenle</h3>
               
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div className="form-control">
+                  <label className="label">
+                    <span className="label-text">Adı</span>
+                  </label>
+                  <input
+                    type="text"
+                    name="name"
+                    value={formData.name}
+                    onChange={handleInputChange}
+                    className="input input-bordered w-full"
+                    required
+                  />
+                </div>
+                
+                <div className="form-control">
+                  <label className="label">
+                    <span className="label-text">Tipi</span>
+                  </label>
+                  <input
+                    type="text"
+                    name="type"
+                    value={formData.type}
+                    onChange={handleInputChange}
+                    className="input input-bordered w-full"
+                    required
+                  />
+                </div>
+                
+                <div className="form-control">
+                  <label className="label">
+                    <span className="label-text">Konumu</span>
+                  </label>
+                  <input
+                    type="text"
+                    name="location"
+                    value={formData.location}
+                    onChange={handleInputChange}
+                    className="input input-bordered w-full"
+                    required
+                  />
+                </div>
+                
                 <div className="form-control">
                   <label className="label">
                     <span className="label-text">Voltaj (V)</span>
@@ -152,6 +211,18 @@ const MotorDetails: React.FC<MotorProps> = ({ motors, onDelete, onUpdate }) => {
               </div>
               
               <div className="grid grid-cols-2 gap-4 mb-6">
+                <div>
+                  <p className="text-sm text-gray-500 dark:text-gray-400">Adı</p>
+                  <p className="font-medium text-gray-900 dark:text-white">{motor.name}</p>
+                </div>
+                <div>
+                  <p className="text-sm text-gray-500 dark:text-gray-400">Tipi</p>
+                  <p className="font-medium text-gray-900 dark:text-white">{motor.type}</p>
+                </div>
+                <div>
+                  <p className="text-sm text-gray-500 dark:text-gray-400">Konumu</p>
+                  <p className="font-medium text-gray-900 dark:text-white">{motor.location}</p>
+                </div>
                 <div>
                   <p className="text-sm text-gray-500 dark:text-gray-400">Voltaj</p>
                   <p className="font-medium text-gray-900 dark:text-white">{motor.voltage} V</p>

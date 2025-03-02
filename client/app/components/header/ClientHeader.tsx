@@ -3,6 +3,7 @@
 
 import { usePathname } from "next/navigation";
 import Header from "./header";
+import { motion, AnimatePresence } from "framer-motion";
 
 export default function ClientHeader() {
   const pathname = usePathname();
@@ -10,5 +11,18 @@ export default function ClientHeader() {
   const hideHeaderOnPaths = ["/login", "/register", "/"];
   const shouldHideHeader = hideHeaderOnPaths.includes(pathname);
 
-  return !shouldHideHeader ? <Header  /> : null;
+  return (
+    <AnimatePresence>
+      {!shouldHideHeader && (
+        <motion.div
+          initial={{ opacity: 0, y: -50 }}
+          animate={{ opacity: 1, y: 0 }}
+          exit={{ opacity: 0, y: -50 }}
+          transition={{ duration: 0.5 }}
+        >
+          <Header />
+        </motion.div>
+      )}
+    </AnimatePresence>
+  );
 }

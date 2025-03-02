@@ -119,11 +119,19 @@ export async function PUT(request: Request) {
     }
 
     // İstek gövdesini JSON olarak parse ediyoruz.
-    const { id, voltage, temperature, isDeviceOn } = await request.json();
+    const { id, name, type, location, voltage, temperature, isDeviceOn } = await request.json();
     
     if (!id) {
       return NextResponse.json(
         { success: false, message: "Motor ID is required" },
+        { status: 400 }
+      );
+    }
+
+    // Zorunlu alanları kontrol ediyoruz
+    if (!name || !type || !location) {
+      return NextResponse.json(
+        { success: false, message: "Name, type and location are required fields" },
         { status: 400 }
       );
     }
@@ -150,7 +158,7 @@ export async function PUT(request: Request) {
     // Motoru güncelliyoruz
     const updatedMotor = await Motor.findByIdAndUpdate(
       id,
-      { voltage, temperature, isDeviceOn },
+      { name, type, location, voltage, temperature, isDeviceOn },
       { new: true } // Güncellenmiş veriyi döndür
     );
 

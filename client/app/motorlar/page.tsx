@@ -6,6 +6,9 @@ import MotorDetails from "../components/motor-details";
 
 interface Motor {
   _id: string;
+  name: string;
+  type: string;
+  location: string;
   voltage: number;
   temperature: number;
   isDeviceOn: boolean;
@@ -20,6 +23,9 @@ const MotorlarPage: React.FC = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
   const [formData, setFormData] = useState({
+    name: "",
+    type: "",
+    location: "",
     voltage: 220,
     temperature: 25,
     isDeviceOn: false
@@ -56,11 +62,12 @@ const MotorlarPage: React.FC = () => {
     }
   }, [status]);
 
-  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const { name, value, type, checked } = e.target;
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
+    const { name, value, type } = e.target as HTMLInputElement;
     setFormData({
       ...formData,
-      [name]: type === "checkbox" ? checked : Number(value)
+      [name]: type === "checkbox" ? (e.target as HTMLInputElement).checked : 
+              type === "number" ? Number(value) : value
     });
   };
 
@@ -81,6 +88,9 @@ const MotorlarPage: React.FC = () => {
       if (data.success) {
         // Form verilerini sıfırla
         setFormData({
+          name: "",
+          type: "",
+          location: "",
           voltage: 220,
           temperature: 25,
           isDeviceOn: false
@@ -123,7 +133,14 @@ const MotorlarPage: React.FC = () => {
   };
 
   // Motor güncelleme işlevi
-  const handleUpdateMotor = async (id: string, motorData: { voltage: number; temperature: number; isDeviceOn: boolean }) => {
+  const handleUpdateMotor = async (id: string, motorData: { 
+    name: string;
+    type: string;
+    location: string;
+    voltage: number; 
+    temperature: number; 
+    isDeviceOn: boolean 
+  }) => {
     try {
       setLoading(true);
       const response = await fetch("/api/motor", {
@@ -184,6 +201,48 @@ const MotorlarPage: React.FC = () => {
               <h2 className="text-xl font-bold text-gray-900 dark:text-white border-b pb-2 mb-4">Yeni Motor Ekle</h2>
               
               <form onSubmit={handleSubmit} className="space-y-4">
+                <div className="form-control">
+                  <label className="label">
+                    <span className="label-text">Adı</span>
+                  </label>
+                  <input
+                    type="text"
+                    name="name"
+                    value={formData.name}
+                    onChange={handleInputChange}
+                    className="input input-bordered w-full"
+                    required
+                  />
+                </div>
+                
+                <div className="form-control">
+                  <label className="label">
+                    <span className="label-text">Tipi</span>
+                  </label>
+                  <input
+                    type="text"
+                    name="type"
+                    value={formData.type}
+                    onChange={handleInputChange}
+                    className="input input-bordered w-full"
+                    required
+                  />
+                </div>
+                
+                <div className="form-control">
+                  <label className="label">
+                    <span className="label-text">Konumu</span>
+                  </label>
+                  <input
+                    type="text"
+                    name="location"
+                    value={formData.location}
+                    onChange={handleInputChange}
+                    className="input input-bordered w-full"
+                    required
+                  />
+                </div>
+                
                 <div className="form-control">
                   <label className="label">
                     <span className="label-text">Voltaj (V)</span>

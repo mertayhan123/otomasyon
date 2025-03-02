@@ -21,7 +21,15 @@ export async function POST(request: Request) {
     }
 
     // İstek gövdesini JSON olarak parse ediyoruz.
-    const { voltage, temperature, isDeviceOn } = await request.json();
+    const { voltage, temperature, isDeviceOn, name, type, location } = await request.json();
+
+    // Zorunlu alanları kontrol ediyoruz
+    if (!name || !type || !location) {
+      return NextResponse.json(
+        { success: false, message: "Name, type and location are required fields" },
+        { status: 400 }
+      );
+    }
 
     // Oturumdaki email ile kullanıcıyı veritabanında arıyoruz.
     const user = await User.findOne({ email: session.user.email });
@@ -35,6 +43,9 @@ export async function POST(request: Request) {
     // Yeni bir Motor belgesi oluşturuyoruz.
     const motor = await Motor.create({
       user: user._id,
+      name,
+      type,
+      location,
       voltage,
       temperature,
       isDeviceOn,
