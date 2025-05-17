@@ -5,9 +5,12 @@ import { useRouter } from "next/navigation";
 import MotorTable from "../components/motor-table";
 import SensorTable from "../components/sensor-table";
 import StatusPanel from "../components/StatusPanel";
+import ReactLiquidGauge from 'react-liquid-gauge';
+
 import AlarmPanel from "../components/AlarmPanel";
 import MotorDetails from "../components/motor-details";
 import Link from "next/link";
+import SuButon from "../components/SuButon";
 
 interface Sensor {
   _id: string;
@@ -351,10 +354,11 @@ const Home: React.FC = () => {
               )}
             </div>
           </div>
-
+           
           {/* Durum Paneli */}
           <div className="flex flex-col space-y-8">
             <StatusPanel statusData={statusData} />
+            <SuButon/>
             <AlarmPanel alarms={alarmData} />
           </div>
         </div>

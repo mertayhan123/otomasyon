@@ -78,7 +78,7 @@ const StatusPanel: React.FC<StatusPanelProps> = ({ statusData }) => {
             whileHover={{ y: -5, boxShadow: "0 10px 25px -5px rgba(59, 130, 246, 0.5)" }}
           >
             <div className="flex items-center justify-between mb-2">
-              <h3 className="text-lg font-semibold text-blue-800 dark:text-blue-300">Su Basıncı</h3>
+              <h3 className="text-lg font-semibold text-blue-800 dark:text-blue-300">Akış Hızı</h3>
               <motion.span 
                 className="text-xl font-bold text-blue-700 dark:text-blue-300"
                 animate={{ scale: [1, 1.1, 1] }}
