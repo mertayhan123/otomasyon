@@ -2,6 +2,7 @@
 import React, { useEffect, useState } from "react";
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
+import VanaDetails from "../components/vanadetail";
 
 interface Vana {
   _id: string;
@@ -127,22 +128,7 @@ const VanalarPage: React.FC = () => {
           </div>
 
           {/* Mevcut Vanalar */}
-          <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg overflow-hidden p-6">
-            <h2 className="text-xl font-bold mb-4 text-gray-900 dark:text-white">Mevcut Vanalar</h2>
-            {vanas.length > 0 ? (
-              <div className="space-y-4">
-                {vanas.map((vana) => (
-                  <div key={vana._id} className="bg-blue-100 dark:bg-gray-700 p-4 rounded-lg shadow">
-                    <h3 className="font-bold text-lg text-gray-900 dark:text-white">{vana.name}</h3>
-                    <p className="text-sm text-gray-700 dark:text-gray-300">Konum: {vana.location}</p>
-                    <p className="text-sm text-gray-700 dark:text-gray-300">A\u00e7\u0131kl\u0131k: {vana.openness}%</p>
-                  </div>
-                ))}
-              </div>
-            ) : (
-              <p className="text-gray-500 dark:text-gray-400">Hen\u00fcz vana eklenmedi.</p>
-            )}
-          </div>
+          <VanaDetails vanas={vanas} onRefresh={fetchVanas} />
         </div>
       </div>
     </div>
