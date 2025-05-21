@@ -11,6 +11,7 @@ import AlarmPanel from "../components/AlarmPanel";
 import MotorDetails from "../components/motor-details";
 import Link from "next/link";
 import SuButon from "../components/SuButon";
+import VanaDetails from "../components/vanadetail";
 
 interface Sensor {
   _id: string;
@@ -68,6 +69,8 @@ export const alarmData: Alarm[] = [
 const Home: React.FC = () => {
   const { data: session, status } = useSession();
   const router = useRouter();
+  const [userVanas, setUserVanas] = useState<any[]>([]);
+
   const [userMotors, setUserMotors] = useState<Motor[]>([]);
   const [userSensors, setUserSensors] = useState<Sensor[]>([]);
   const [loading, setLoading] = useState(true);
@@ -83,13 +86,31 @@ const Home: React.FC = () => {
       router.push("/login");
     }
   }, [status, router]);
+ const fetchVanas = async () => {
+  try {
+    const response = await fetch("/api/vana");
+    const data = await response.json();
 
+    if (data.success) {
+      setUserVanas(data.vanas);
+    } else {
+      console.error("Vana verileri alınamadı:", data.message);
+    }
+  } catch (err) {
+    console.error("Vana çekme hatası:", err);
+  }
+};
+  useEffect(() => {
+    if (status === "authenticated") {
+      fetchVanas();
+    }
+  }, [status]);
   // Kullanıcının motorlarını getiren fonksiyon
   const fetchUserMotors = async () => {
     try {
       const response = await fetch("/api/motor");
       const data = await response.json();
-      
+
       if (data.success) {
         setUserMotors(data.motors);
       } else {
@@ -105,7 +126,7 @@ const Home: React.FC = () => {
     try {
       const response = await fetch("/api/sensor");
       const data = await response.json();
-      
+
       if (data.success) {
         setUserSensors(data.sensors);
       } else {
@@ -121,7 +142,7 @@ const Home: React.FC = () => {
     try {
       const response = await fetch("/api/status");
       const data = await response.json();
-      
+
       if (data.success) {
         setStatusData({
           waterPressure: data.status.waterPressure || "0 PSI",
@@ -140,7 +161,7 @@ const Home: React.FC = () => {
   const fetchAllData = async () => {
     setLoading(true);
     setError("");
-    
+
     try {
       await Promise.all([
         fetchUserMotors(),
@@ -167,9 +188,9 @@ const Home: React.FC = () => {
       const response = await fetch(`/api/motor?id=${id}`, {
         method: "DELETE",
       });
-      
+
       const data = await response.json();
-      
+
       if (data.success) {
         setUserMotors(prevMotors => prevMotors.filter(motor => motor._id !== id));
       } else {
@@ -191,12 +212,12 @@ const Home: React.FC = () => {
         },
         body: JSON.stringify({ id, ...motorData }),
       });
-      
+
       const data = await response.json();
-      
+
       if (data.success) {
-        setUserMotors(prevMotors => 
-          prevMotors.map(motor => 
+        setUserMotors(prevMotors =>
+          prevMotors.map(motor =>
             motor._id === id ? { ...motor, ...motorData } : motor
           )
         );
@@ -226,7 +247,7 @@ const Home: React.FC = () => {
             Gerçek zamanlı Motor, Sensör ve Durum Bilgileri
           </p>
         </header>
-        
+
         {error && (
           <div className="mb-6 p-4 text-sm text-destructive bg-destructive/10 border border-destructive/20 rounded-lg flex items-center">
             <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 mr-2 text-destructive" viewBox="0 0 20 20" fill="currentColor">
@@ -235,7 +256,7 @@ const Home: React.FC = () => {
             {error}
           </div>
         )}
-        
+
         <div className="grid lg:grid-cols-3 gap-8">
           <div className="lg:col-span-2 space-y-8">
             {/* Motorlar Kartı */}
@@ -254,10 +275,10 @@ const Home: React.FC = () => {
                   Motorları Yönet
                 </Link>
               </div>
-              
+
               {userMotors.length > 0 ? (
-                <MotorDetails 
-                  motors={userMotors} 
+                <MotorDetails
+                  motors={userMotors}
                   onDelete={handleDeleteMotor}
                   onUpdate={handleUpdateMotor}
                 />
@@ -290,7 +311,7 @@ const Home: React.FC = () => {
                   Sensörleri Yönet
                 </Link>
               </div>
-              
+
               {userSensors.length > 0 ? (
                 <div className="overflow-x-auto">
                   <table className="min-w-full divide-y divide-border">
@@ -306,8 +327,8 @@ const Home: React.FC = () => {
                     </thead>
                     <tbody>
                       {userSensors.map((sensor, index) => (
-                        <tr 
-                          key={sensor._id} 
+                        <tr
+                          key={sensor._id}
                           className={`${index % 2 === 0 ? 'bg-background' : 'bg-secondary/20'} hover:bg-secondary/50 transition-colors`}
                         >
                           <td className="px-4 py-3 whitespace-nowrap text-sm font-medium text-foreground">
@@ -328,11 +349,10 @@ const Home: React.FC = () => {
                             {sensor.value} {sensor.unit}
                           </td>
                           <td className="px-4 py-3 whitespace-nowrap text-sm text-foreground">
-                            <span className={`px-2 py-1 inline-flex text-xs leading-5 font-semibold rounded-full ${
-                              sensor.isActive 
-                                ? "bg-green-100 dark:bg-green-900 text-green-800 dark:text-green-200" 
-                                : "bg-red-100 dark:bg-red-900 text-red-800 dark:text-red-200"
-                            }`}>
+                            <span className={`px-2 py-1 inline-flex text-xs leading-5 font-semibold rounded-full ${sensor.isActive
+                              ? "bg-green-100 dark:bg-green-900 text-green-800 dark:text-green-200"
+                              : "bg-red-100 dark:bg-red-900 text-red-800 dark:text-red-200"
+                              }`}>
                               {sensor.isActive ? "Aktif" : "Pasif"}
                             </span>
                           </td>
@@ -353,12 +373,46 @@ const Home: React.FC = () => {
                 </div>
               )}
             </div>
+            <div>
+              {/* Oransal Vanalar Kartı */}
+              <div className="card p-6">
+                <div className="flex justify-between items-center border-b border-border pb-4 mb-6">
+                  <h2 className="text-2xl font-bold text-foreground flex items-center">
+                    <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6 mr-2 text-primary" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 3v3m0 12v3m9-9h-3M6 12H3m15.364-6.364l-2.121 2.121M6.757 17.243l-2.121 2.121m12.728 0l-2.121-2.121M6.757 6.757L4.636 4.636" />
+                    </svg>
+                    Oransal Vanalar
+                  </h2>
+                  <Link href="/vanalar" className="btn btn-primary btn-sm gap-2">
+                    <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4" viewBox="0 0 20 20" fill="currentColor">
+                      <path d="M13.586 3.586a2 2 0 112.828 2.828l-.793.793-2.828-2.828.793-.793zM11.379 5.793L3 14.172V17h2.828l8.38-8.379-2.83-2.828z" />
+                    </svg>
+                    Vanaları Yönet
+                  </Link>
+                </div>
+
+                {userVanas.length > 0 ? (
+                  <VanaDetails vanas={userVanas} onRefresh={fetchVanas} />
+                ) : (
+                  <div className="text-center p-8 bg-secondary rounded-lg">
+                    <svg xmlns="http://www.w3.org/2000/svg" className="h-12 w-12 mx-auto text-muted-foreground mb-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z" />
+                    </svg>
+                    <p className="text-muted-foreground">Henüz oransal vana eklenmemiş</p>
+                    <Link href="/vanalar" className="btn btn-primary mt-4">
+                      Vana Ekle
+                    </Link>
+                  </div>
+                )}
+              </div>
+
+            </div>
           </div>
-           
+
           {/* Durum Paneli */}
           <div className="flex flex-col space-y-8">
             <StatusPanel statusData={statusData} />
-            <SuButon/>
+            <SuButon />
             <AlarmPanel alarms={alarmData} />
           </div>
         </div>
