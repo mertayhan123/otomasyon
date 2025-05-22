@@ -4,169 +4,78 @@ import React from "react";
 import { motion } from "framer-motion";
 import PageTransition from "./components/PageTransition";
 
-function Home() {
+export default function Home() {
   const { data: session } = useSession();
-
-  // Animasyon varyantları
-  const containerVariants = {
-    hidden: { opacity: 0 },
-    visible: {
-      opacity: 1,
-      transition: {
-        delayChildren: 0.3,
-        staggerChildren: 0.2
-      }
-    }
-  };
-
-  const itemVariants = {
-    hidden: { y: 20, opacity: 0 },
-    visible: {
-      y: 0,
-      opacity: 1,
-      transition: { duration: 0.5 }
-    }
-  };
-
-  const listItemVariants = {
-    hidden: { x: -10, opacity: 0 },
-    visible: {
-      x: 0,
-      opacity: 1,
-      transition: { duration: 0.3 }
-    }
-  };
 
   return (
     <PageTransition>
-      <div className="min-h-screen bg-gray-100 flex items-center justify-center">
-        <motion.div 
-          className="bg-white p-8 rounded-lg shadow-md max-w-2xl text-center"
-          variants={containerVariants}
-          initial="hidden"
-          animate="visible"
-          whileHover={{ boxShadow: "0 25px 50px -12px rgba(0, 0, 0, 0.25)" }}
-          transition={{ duration: 0.3 }}
+      <div className="min-h-screen bg-gradient-to-br from-slate-900 via-gray-900 to-black text-white flex items-center justify-center px-6">
+        <motion.div
+          className="max-w-4xl w-full p-10 rounded-3xl shadow-2xl bg-black/60 backdrop-blur-md border border-gray-700"
+          initial={{ opacity: 0, y: 40 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.8 }}
         >
-          <motion.h1 
-            className="text-4xl font-bold mb-6 text-blue-600"
-            variants={itemVariants}
-            whileHover={{ scale: 1.05 }}
-          >
-            Otomasyon Sistemi
-          </motion.h1>
-
-          <motion.p 
-            className="text-lg text-gray-700 mb-4"
-            variants={itemVariants}
-          >
-            Bu sistem, sensörlerden gelen verileri analiz ederek, motor ve diğer
-            cihazları uzaktan kontrol etmenizi sağlar. Veriler anlık olarak takip
-            edilir ve sistem üzerinde kolayca değişiklik yapılabilir.
-          </motion.p>
-
-          <motion.div 
-            className="text-left mb-6"
-            variants={itemVariants}
-          >
-            <motion.h2 
-              className="text-2xl font-semibold text-gray-800 mb-2"
-              whileHover={{ color: "#3b82f6" }}
-            >
-              Özellikler:
-            </motion.h2>
-            <ul className="list-disc list-inside text-gray-700">
-              <motion.li variants={listItemVariants} custom={1}>
-                Gerçek zamanlı sensör verilerini izleme
-              </motion.li>
-              <motion.li variants={listItemVariants} custom={2}>
-                Motor değerlerini anlık olarak değiştirme
-              </motion.li>
-              <motion.li variants={listItemVariants} custom={3}>
-                Kullanıcı dostu ve dinamik arayüz
-              </motion.li>
-            </ul>
+          {/* Header */}
+          <motion.div className="text-center mb-10" initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.2 }}>
+            <h1 className="text-5xl font-extrabold text-indigo-400 tracking-wide">Otomasyon Sistemi</h1>
+            <p className="text-gray-300 mt-3 text-lg">Akıllı Kontrol & Gerçek Zamanlı İzleme</p>
           </motion.div>
 
-          <motion.div 
-            className="text-left"
-            variants={itemVariants}
-          >
-            <motion.h2 
-              className="text-2xl font-semibold text-gray-800 mb-2"
-              whileHover={{ color: "#3b82f6" }}
+          {/* Content Grid */}
+          <div className="grid md:grid-cols-2 gap-8">
+            {/* Özellikler */}
+            <motion.div
+              className="space-y-4"
+              initial={{ x: -30, opacity: 0 }}
+              animate={{ x: 0, opacity: 1 }}
+              transition={{ delay: 0.3 }}
             >
-              Kullanılan Teknolojiler:
-            </motion.h2>
-            <ul className="list-disc list-inside text-gray-700">
-              <motion.li variants={listItemVariants} custom={1}>
-                ReactJS
-              </motion.li>
-              <motion.li variants={listItemVariants} custom={2}>
-                DaisyUI & TailwindCSS
-              </motion.li>
-              <motion.li variants={listItemVariants} custom={3}>
-                Node.js & Express.js
-              </motion.li>
-              <motion.li variants={listItemVariants} custom={4}>
-                Arduino & ESP8266
-              </motion.li>
-            </ul>
-          </motion.div>
+              <h2 className="text-2xl font-bold text-indigo-300">🚀 Özellikler</h2>
+              <ul className="space-y-2 text-gray-300 list-disc list-inside">
+                <li>Gerçek zamanlı sensör verisi</li>
+                <li>Motor ve cihaz kontrolü</li>
+                <li>Kullanıcı dostu arayüz</li>
+                <li>Uzaktan erişim imkânı</li>
+              </ul>
+            </motion.div>
 
-          <motion.div 
-            className="mt-8"
-            variants={itemVariants}
-          >
-            <motion.p 
-              className="text-gray-600"
-              animate={{ 
-                opacity: [0.5, 1, 0.5],
-                scale: [1, 1.02, 1]
-              }}
-              transition={{ 
-                duration: 3, 
-                repeat: Infinity,
-                repeatType: "reverse" 
-              }}
+            {/* Teknolojiler */}
+            <motion.div
+              className="space-y-4"
+              initial={{ x: 30, opacity: 0 }}
+              animate={{ x: 0, opacity: 1 }}
+              transition={{ delay: 0.4 }}
             >
-              Bu sistem, geleceğin otomasyon çözümlerine öncülük eder.
-            </motion.p>
-          </motion.div>
+              <h2 className="text-2xl font-bold text-indigo-300">🛠️ Kullanılan Teknolojiler</h2>
+              <ul className="space-y-2 text-gray-300 list-disc list-inside">
+                <li>Next.js & React</li>
+                <li>TailwindCSS & DaisyUI</li>
+                <li>Node.js & Express</li>
+                <li>Arduino & ESP8266</li>
+              </ul>
+            </motion.div>
+          </div>
 
+          {/* CTA */}
           <motion.div
-            variants={itemVariants}
-            whileHover={{ scale: 1.05 }}
-            whileTap={{ scale: 0.95 }}
+            className="mt-12 text-center"
+            initial={{ scale: 0.9, opacity: 0 }}
+            animate={{ scale: 1, opacity: 1 }}
+            transition={{ delay: 0.6 }}
           >
-            {session ? (
-              <motion.a 
-                href="/main" 
-                className="btn btn-success mt-6 inline-block"
-                whileHover={{ 
-                  backgroundColor: "#059669",
-                  boxShadow: "0 10px 15px -3px rgba(16, 185, 129, 0.4)"
-                }}
-              >
-                {session.user?.name}
-              </motion.a>
-            ) : (
-              <motion.a 
-                href="/login" 
-                className="btn btn-success mt-6 inline-block"
-                whileHover={{ 
-                  backgroundColor: "#059669",
-                  boxShadow: "0 10px 15px -3px rgba(16, 185, 129, 0.4)"
-                }}
-              >
-                Login
-              </motion.a>
-            )}
+            <a
+              href={session ? "/main" : "/login"}
+              className="btn btn-wide btn-primary text-white text-lg transition hover:scale-105"
+            >
+              {session ? `${session.user?.name} ile Devam Et` : "Giriş Yap"}
+            </a>
+            <p className="text-sm text-gray-400 mt-2 italic">
+              Geleceğin otomasyon çözümlerine bir adım daha yakınsınız.
+            </p>
           </motion.div>
         </motion.div>
       </div>
     </PageTransition>
   );
 }
-
-export default Home;
